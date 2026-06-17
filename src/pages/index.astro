@@ -10,7 +10,7 @@ import Base from '../layouts/Base.astro';
     <p class="hero__eyebrow">Стратегия развития digital&#8209;каналов</p>
     <h1>MAAG <span>×</span> ОНЛАЙН</h1>
     <p class="subhead">Как превратить сильный офлайн&#8209;бренд в&nbsp;полноценную омниканальную платформу</p>
-    <p class="hero__author">Подготовлено для команды Новая мода<br>AWG&nbsp;&&nbsp;<strong>Илья Кадацкий</strong> · E&#8209;commerce стратег · 20&nbsp;лет в&nbsp;digital</p>
+    <p class="hero__author">Подготовлено для команды Новая мода<br><strong>AWG</strong>&nbsp;&&nbsp;<strong>Илья Кадацкий</strong> · E&#8209;commerce стратег · 20&nbsp;лет в&nbsp;digital</p>
   </div>
 </section>
 
@@ -294,12 +294,25 @@ import Base from '../layouts/Base.astro';
   const first = slides[0].querySelector('.fade-up');
   if (first) first.classList.add('visible');
 
+  const isMobile = () => window.innerWidth <= 900;
+
+  // Check if current slide content is scrolled to boundary
+  function canLeave(dir) {
+    if (!isMobile()) return true;
+    const s = slides[current];
+    const tol = 2;
+    if (dir > 0) return s.scrollHeight - s.scrollTop - s.clientHeight <= tol;
+    if (dir < 0) return s.scrollTop <= tol;
+    return true;
+  }
+
   // Mouse wheel
   let wheelAccum = 0;
   const WHEEL_THRESHOLD = 50;
   document.addEventListener('wheel', (e) => {
-    // Allow horizontal scroll inside carousels
     if (e.target.closest('.carousel')) return;
+    const dir = e.deltaY > 0 ? 1 : -1;
+    if (!canLeave(dir)) return; // let slide scroll naturally on mobile
     e.preventDefault();
     wheelAccum += e.deltaY;
     if (Math.abs(wheelAccum) >= WHEEL_THRESHOLD) {
@@ -310,13 +323,13 @@ import Base from '../layouts/Base.astro';
 
   // Keyboard
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
-    if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); goTo(current - 1); }
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); if (canLeave(1)) goTo(current + 1); }
+    if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); if (canLeave(-1)) goTo(current - 1); }
     if (e.key === 'Home') { e.preventDefault(); goTo(0); }
     if (e.key === 'End') { e.preventDefault(); goTo(total - 1); }
   });
 
-  // Touch swipe
+  // Touch swipe — on mobile check scroll boundary
   let touchY = 0;
   document.addEventListener('touchstart', (e) => {
     if (e.target.closest('.carousel')) return;
@@ -325,7 +338,8 @@ import Base from '../layouts/Base.astro';
   document.addEventListener('touchend', (e) => {
     if (e.target.closest('.carousel')) return;
     const diff = touchY - e.changedTouches[0].clientY;
-    if (Math.abs(diff) > 50) goTo(current + (diff > 0 ? 1 : -1));
+    const dir = diff > 0 ? 1 : -1;
+    if (Math.abs(diff) > 50 && canLeave(dir)) goTo(current + dir);
   }, { passive: true });
 
   // Carousel buttons
@@ -355,11 +369,42 @@ import Base from '../layouts/Base.astro';
 
   // Drag scroll for carousels
   document.querySelectorAll('.carousel').forEach((c) => {
-    let isDown = false, startX, scrollL;
-    c.addEventListener('mousedown', (e) => { isDown = true; startX = e.pageX - c.offsetLeft; scrollL = c.scrollLeft; c.style.scrollBehavior = 'auto'; });
-    c.addEventListener('mouseleave', () => { isDown = false; c.style.scrollBehavior = 'smooth'; });
-    c.addEventListener('mouseup', () => { isDown = false; c.style.scrollBehavior = 'smooth'; });
-    c.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); const x = e.pageX - c.offsetLeft; c.scrollLeft = scrollL - (x - startX); });
+    let isDown = false, startX, scrollL, velX = 0, lastX, lastT, moved = false;
+    // Prevent native image drag
+    c.querySelectorAll('img').forEach(img => img.addEventListener('dragstart', e => e.preventDefault()));
+    c.addEventListener('mousedown', (e) => {
+      isDown = true; moved = false;
+      startX = e.pageX; lastX = e.pageX; lastT = Date.now();
+      scrollL = c.scrollLeft; velX = 0;
+      c.style.scrollSnapType = 'none';
+      c.style.scrollBehavior = 'auto';
+    });
+    const stop = () => {
+      if (!isDown) return;
+      isDown = false;
+      c.style.scrollBehavior = 'smooth';
+      c.style.scrollSnapType = 'x mandatory';
+      // Snap to nearest card
+      const item = c.querySelector('.carousel__item');
+      if (item) {
+        const w = item.offsetWidth + 32;
+        const target = Math.round(c.scrollLeft / w) * w;
+        c.scrollTo({ left: target, behavior: 'smooth' });
+      }
+    };
+    c.addEventListener('mouseleave', stop);
+    c.addEventListener('mouseup', stop);
+    c.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX;
+      const dx = x - lastX;
+      if (Math.abs(x - startX) > 5) moved = true;
+      c.scrollLeft = scrollL - (x - startX);
+      lastX = x; lastT = Date.now();
+    });
+    // Prevent click on links/buttons after drag
+    c.addEventListener('click', (e) => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
   });
 
   // Vertical pagination
