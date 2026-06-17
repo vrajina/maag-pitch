@@ -138,7 +138,9 @@ h3{font-size:clamp(1.2rem,2vw,1.5rem)}
 /* Responsive */
 @media(max-width:900px){
   .hero h1{white-space:normal;font-size:clamp(2.5rem,10vw,4rem)}
-  .slide,.hero{overflow-y:auto}
+  .slide,.hero{overflow-y:auto;-webkit-overflow-scrolling:touch;align-items:flex-start}
+  .slide__inner{padding-top:clamp(2rem,4vh,3rem);padding-bottom:3rem}
+  .hero__content{padding-top:clamp(3rem,8vh,5rem);padding-bottom:3rem}
   .cols{grid-template-columns:1fr;gap:2rem}
   .stats-grid{grid-template-columns:repeat(2,1fr)}
   .bio-grid{grid-template-columns:repeat(2,1fr)}
