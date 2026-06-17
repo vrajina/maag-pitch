@@ -306,13 +306,52 @@ import Base from '../layouts/Base.astro';
     return true;
   }
 
+  // Check if carousel is at boundary
+  function carouselAtEdge(carousel, dir) {
+    const tol = 5;
+    if (dir > 0) return carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - tol;
+    if (dir < 0) return carousel.scrollLeft <= tol;
+    return true;
+  }
+
+  // Scroll carousel by one card
+  function scrollCarouselByCard(carousel, dir) {
+    const item = carousel.querySelector('.carousel__item');
+    if (!item) return;
+    const w = item.offsetWidth + 32;
+    carousel.scrollBy({ left: dir * w, behavior: 'smooth' });
+  }
+
   // Mouse wheel
   let wheelAccum = 0;
   const WHEEL_THRESHOLD = 50;
+  let wheelLocked = false;
   document.addEventListener('wheel', (e) => {
-    if (e.target.closest('.carousel')) return;
     const dir = e.deltaY > 0 ? 1 : -1;
-    if (!canLeave(dir)) return; // let slide scroll naturally on mobile
+    if (!canLeave(dir)) return; // mobile inner scroll
+
+    // Desktop: check if current slide has a carousel
+    const carousel = !isMobile() && slides[current].querySelector('.carousel');
+    if (carousel) {
+      e.preventDefault();
+      if (wheelLocked) return;
+      wheelAccum += e.deltaY;
+      if (Math.abs(wheelAccum) >= WHEEL_THRESHOLD) {
+        const scrollDir = wheelAccum > 0 ? 1 : -1;
+        if (carouselAtEdge(carousel, scrollDir)) {
+          // At edge — switch slide
+          goTo(current + scrollDir);
+        } else {
+          // Scroll carousel
+          wheelLocked = true;
+          scrollCarouselByCard(carousel, scrollDir);
+          setTimeout(() => { wheelLocked = false; }, 500);
+        }
+        wheelAccum = 0;
+      }
+      return;
+    }
+
     e.preventDefault();
     wheelAccum += e.deltaY;
     if (Math.abs(wheelAccum) >= WHEEL_THRESHOLD) {
