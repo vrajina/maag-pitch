@@ -137,10 +137,11 @@ h3{font-size:clamp(1.2rem,2vw,1.5rem)}
 
 /* Responsive */
 @media(max-width:900px){
+  .slides-wrapper{position:static;transform:none!important;transition:none}
+  .slide,.hero{height:auto;min-height:auto;overflow:visible}
+  .hero{min-height:100vh;min-height:100dvh}
   .hero h1{white-space:normal;font-size:clamp(2.5rem,10vw,4rem)}
-  .slide,.hero{overflow-y:auto;-webkit-overflow-scrolling:touch;align-items:flex-start}
   .slide__inner{padding-top:clamp(2rem,4vh,3rem);padding-bottom:3rem}
-  .hero__content{padding-top:clamp(3rem,8vh,5rem);padding-bottom:3rem}
   .cols{grid-template-columns:1fr;gap:2rem}
   .stats-grid{grid-template-columns:repeat(2,1fr)}
   .bio-grid{grid-template-columns:repeat(2,1fr)}
@@ -149,8 +150,7 @@ h3{font-size:clamp(1.2rem,2vw,1.5rem)}
   .carousel__item{flex:0 0 85vw}
   .ux-card__img{max-height:220px}
   .growth-card{min-height:auto}
-  .slide-nav{right:.5rem;gap:.4rem}
-  .slide-nav__dot{width:8px;height:8px}
+  .slide-nav{display:none}
 }
 @media(max-width:480px){
   .stats-grid{grid-template-columns:1fr}
