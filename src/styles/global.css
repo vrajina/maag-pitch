@@ -172,3 +172,9 @@ h3{font-size:clamp(1.2rem,2vw,1.5rem)}
   .carousel__item{flex:0 0 90vw}
   .synergy-brands{flex-direction:column;align-items:center}
 }
+
+/* Big callout */
+.callout-big{margin-top:2rem;padding:2rem 2.5rem;border-radius:16px;background:linear-gradient(135deg,rgba(212,163,115,.15),rgba(212,163,115,.05));border:1px solid rgba(212,163,115,.3);text-align:center}
+.callout-big__number{font-family:var(--font-display);font-size:3.5rem;font-weight:800;color:var(--accent);line-height:1;margin-bottom:.5rem}
+.callout-big__label{font-size:1rem;color:var(--text-secondary);line-height:1.5}
+@media(max-width:900px){.callout-big__number{font-size:2.5rem}.callout-big{padding:1.5rem}}
