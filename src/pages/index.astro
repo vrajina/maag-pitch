@@ -48,6 +48,28 @@ import Base from '../layouts/Base.astro';
   </div>
 </section>
 
+<section class="slide slide--dark" id="case">
+  <div class="slide__inner fade-up">
+    <p class="label">Кейс из&nbsp;жизни</p><div class="divider"></div>
+    <h2 style="margin-bottom:2rem">Когда онлайн подводит офлайн</h2>
+    <div class="cols">
+      <div>
+        <div class="quote" style="margin-bottom:1.5rem">Молодая девушка из&nbsp;Санкт&#8209;Петербурга зашла в&nbsp;розничный магазин MAAG. Ей&nbsp;понравилась вещь, но&nbsp;решила заказать онлайн. Зашла на&nbsp;сайт — а&nbsp;этого товара там просто нет.</div>
+        <p style="font-size:1rem;color:var(--text-secondary);line-height:1.7">Это не&nbsp;единичный случай. Это системная проблема, которая стоит бренду реальных продаж каждый день.</p>
+      </div>
+      <div>
+        <p class="label" style="margin-bottom:1rem">Вопросы, которые стоит задать</p>
+        <ul class="benefit-list">
+          <li>Если онлайн сейчас&nbsp;= Click&nbsp;&amp;&nbsp;Collect, почему товар из&nbsp;магазина не&nbsp;отображается на&nbsp;сайте?</li>
+          <li>Какие остатки выводятся на&nbsp;web&#8209;витрину?</li>
+          <li>Насколько они отражают реальный складской товарный запас и&nbsp;ассортимент сети?</li>
+          <li>Сколько таких «потерянных» продаж происходит ежедневно?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="slide slide--dark" id="marketplace">
   <div class="slide__inner fade-up">
     <p class="label">Стратегический риск</p><div class="divider"></div>
@@ -385,7 +407,7 @@ import Base from '../layouts/Base.astro';
   let wa=0;
   document.addEventListener('wheel',(e)=>{if(isMob())return;e.preventDefault();wa+=e.deltaY;if(Math.abs(wa)>=60){goTo(current+(wa>0?1:-1));wa=0}},{passive:false});
   document.addEventListener('keydown',(e)=>{if(isMob())return;if(e.key==='ArrowDown'||e.key==='PageDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();goTo(current-1)}if(e.key==='Home'){e.preventDefault();goTo(0)}if(e.key==='End'){e.preventDefault();goTo(total-1)}});
-  const names=['MAAG × Онлайн','Позиция силы','Нюанс','Маркетплейсы','Контент','Дорожная карта','01 Web-витрина','02 Доставка','03 SEO','04 Коммуникации','05 Приложение','06 Рекомендации','07 Лояльность','08 Блог','09 Инфраструктура','Контакт'];
+  const names=['MAAG × Онлайн','Позиция силы','Нюанс','Кейс','Маркетплейсы','Контент','Дорожная карта','01 Web-витрина','02 Доставка','03 SEO','04 Коммуникации','05 Приложение','06 Рекомендации','07 Лояльность','08 Блог','09 Инфраструктура','Контакт'];
   const nav=document.createElement('nav');nav.className='slide-nav';
   slides.forEach((s,i)=>{
     const row=document.createElement('button');row.className='slide-nav__item'+(i===0?' active':'');
