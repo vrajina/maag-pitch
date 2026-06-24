@@ -174,7 +174,7 @@ h3{font-size:clamp(1.2rem,2vw,1.5rem)}
 }
 
 /* Big callout */
-.callout-big{margin-top:2rem;padding:2rem 2.5rem;border-radius:16px;background:linear-gradient(135deg,rgba(212,163,115,.15),rgba(212,163,115,.05));border:1px solid rgba(212,163,115,.3);text-align:center}
-.callout-big__number{font-family:var(--font-display);font-size:3.5rem;font-weight:800;color:var(--accent);line-height:1;margin-bottom:.5rem}
-.callout-big__label{font-size:1rem;color:var(--text-secondary);line-height:1.5}
-@media(max-width:900px){.callout-big__number{font-size:2.5rem}.callout-big{padding:1.5rem}}
+.callout-big{margin-top:2rem;padding:1.5rem 2rem;border-radius:0 12px 12px 0;background:rgba(212,163,115,.08);border-left:4px solid var(--accent);text-align:left}
+.callout-big__number{font-family:var(--font-display);font-size:3rem;font-weight:800;color:var(--green);line-height:1.1;margin-bottom:.4rem}
+.callout-big__label{font-size:.95rem;color:#222;line-height:1.5;font-weight:500}
+@media(max-width:900px){.callout-big__number{font-size:2.2rem}.callout-big{padding:1.2rem 1.5rem}}
