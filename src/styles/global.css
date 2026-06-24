@@ -29,7 +29,9 @@ h3{font-size:clamp(1.2rem,2vw,1.5rem)}
 .slide--dark{background:var(--dark)}
 .slide--black{background:var(--black)}
 .slide--warm{background:var(--off-white);color:var(--black)}
-.slide--warm .subhead,.slide--warm .text-secondary{color:#6b6560}
+.slide--warm .subhead,.slide--warm .text-secondary{color:#4a4540}
+.slide--warm .benefit-list li{color:#333}
+.slide--warm .benefit-list li::before{color:#b8864a}
 .slide__inner{max-width:1200px;width:100%;margin:0 auto}
 .divider{width:48px;height:2px;background:var(--accent);margin:1.2rem 0 1.5rem}
 
