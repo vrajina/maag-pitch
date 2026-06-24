@@ -383,10 +383,17 @@ import Base from '../layouts/Base.astro';
   let wa=0;
   document.addEventListener('wheel',(e)=>{if(isMob())return;e.preventDefault();wa+=e.deltaY;if(Math.abs(wa)>=60){goTo(current+(wa>0?1:-1));wa=0}},{passive:false});
   document.addEventListener('keydown',(e)=>{if(isMob())return;if(e.key==='ArrowDown'||e.key==='PageDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();goTo(current-1)}if(e.key==='Home'){e.preventDefault();goTo(0)}if(e.key==='End'){e.preventDefault();goTo(total-1)}});
+  const names=['MAAG × Онлайн','Позиция силы','Нюанс','Маркетплейсы','Контент','Дорожная карта','01 Web-витрина','02 SEO','03 Коммуникации','04 Приложение','05 Доставка','06 Рекомендации','07 Лояльность','08 Блог','09 Инфраструктура','Контакт'];
   const nav=document.createElement('nav');nav.className='slide-nav';
-  slides.forEach((s,i)=>{const d=document.createElement('button');d.className='slide-nav__dot'+(i===0?' active':'');d.addEventListener('click',()=>goTo(i));nav.appendChild(d)});
+  slides.forEach((s,i)=>{
+    const row=document.createElement('button');row.className='slide-nav__item'+(i===0?' active':'');
+    const dot=document.createElement('span');dot.className='slide-nav__dot';
+    const lbl=document.createElement('span');lbl.className='slide-nav__label';lbl.textContent=names[i]||'';
+    row.appendChild(lbl);row.appendChild(dot);
+    row.addEventListener('click',()=>goTo(i));nav.appendChild(row);
+  });
   document.body.appendChild(nav);
-  new MutationObserver(()=>{nav.querySelectorAll('.slide-nav__dot').forEach((d,i)=>{d.classList.toggle('active',i===current)})}).observe(w,{attributes:true,attributeFilter:['style']});
+  new MutationObserver(()=>{nav.querySelectorAll('.slide-nav__item').forEach((d,i)=>{d.classList.toggle('active',i===current)})}).observe(w,{attributes:true,attributeFilter:['style']});
 })();
 </script>
 </Base>
